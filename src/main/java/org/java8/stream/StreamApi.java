@@ -127,11 +127,59 @@ public class StreamApi {
         };
     }
 
+    public void consumer() {
+        Consumer<Integer> consumerAnonymousFunction = new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                for (int i = 0; i <= integer; i++) {
+                    try {
+                        Thread.sleep(1000);
+                        System.out.println(i);
+                    } catch (InterruptedException ie) {
+                        ie.printStackTrace();
+                    }
+                }
+            }
+        };
+        consumerAnonymousFunction.accept(2);
+
+        Consumer<Integer> consumerLambdaFunction = (Integer integer) -> {
+            for (int i = 0; i <= integer; i++) {
+                try {
+                    Thread.sleep(1000);
+                    System.out.println(i);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        };
+        consumerLambdaFunction.accept(2);
+    }
+
+    public void supplier() {
+        Supplier<StringBuilder> supplierAnonymousFunction = new Supplier<StringBuilder>() {
+            @Override
+            public StringBuilder get() {
+                return new StringBuilder();
+            }
+        };
+        StringBuilder stringBuilder = supplierAnonymousFunction.get();
+        stringBuilder.append("java is programming language");
+        System.out.println(stringBuilder);
+
+        Supplier<StringBuffer> supplierLambdaFunction = () -> {
+            return new StringBuffer();
+        };
+        StringBuffer stringBuffer = supplierLambdaFunction.get();
+    }
+
     public static void main(String[] arg) {
         StreamApi streamApi = new StreamApi();
         streamApi.binaryOperator();
         streamApi.unaryOperator();
         streamApi.predicate();
         streamApi.function();
+        streamApi.consumer();
+        streamApi.supplier();
     }
 }
