@@ -1,39 +1,73 @@
 package org.java8;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.Optional;
+
 
 public class App {
-	
-    public static void main(String[]args) {
-        List < Integer > copyOnWriteArrayList = new CopyOnWriteArrayList < Integer > ();
-        copyOnWriteArrayList.add(43);
-        copyOnWriteArrayList.add(10);
-        copyOnWriteArrayList.add(20);
-        copyOnWriteArrayList.add(30);
-        copyOnWriteArrayList.add(23);
 
-        System.out.println(copyOnWriteArrayList);
-        List < Integer > oddNumberList = new ArrayList < Integer > ();
-        copyOnWriteArrayList.forEach((element)->{
-            if (element % 2 == 0) {
-                oddNumberList.add(element);
-            }
-        });
-        List < Integer > oddNumberList2 = copyOnWriteArrayList.stream().filter((Integer element)->{
-            return element % 2 == 0;
-        }).collect(Collectors.toList());
-        // System.out.println(oddNumberList2.stream().count());
+    class Employee {
+        String empName;
+        String empAddress;
+        int empId;
+        long empContactNumber;
 
-        Optional < Integer > findFirst = oddNumberList.stream().findFirst();
-        System.out.println(findFirst);
-		if(findFirst.isPresent()){
-			Integer value = findFirst.get();
-			System.out.println(value);
-		}
-		
-//		Optional<Integer> findLast = oddNumberList.stream().findLast();
+        public Employee(String empName, String empAddress, int empId, long empContactNumber) {
+            this.empName = empName;
+            this.empAddress = empAddress;
+            this.empId = empId;
+            this.empContactNumber = empContactNumber;
+        }
+
+        public String toString() {
+            return this.empName + " " + this.empAddress + " " + this.empId + " " + this.empContactNumber;
+        }
+    }
+
+    public static void collectrosMethod() {
+        Employee emp1 = new App().new Employee("java", "mumbai", 15, 2222222222l);
+        Employee emp2 = new App().new Employee("phython", "pune", 25, 123456789l);
+        Employee emp3 = new App().new Employee("javaScript", "Latur", 35, 3333333333l);
+        Employee emp4 = new App().new Employee("Hari Om", "Banner", 2566541, 78945612300l);
+        List<Employee> employeeList = new ArrayList<Employee>();
+        employeeList.add(emp1);
+        employeeList.add(emp2);
+        employeeList.add(emp3);
+        employeeList.add(emp4);
+
+        Map<Integer, List<Employee>> map = employeeList.stream().collect(Collectors.groupingBy((item) -> {
+            return item.empId;
+        }, () -> {
+            return new HashMap<Integer, List<Employee>>();
+        }, Collectors.toList()));
+        System.out.println(map);
+
+
+        Map<String, List<Employee>> groupingByConcurrent = employeeList.stream().collect(Collectors.groupingByConcurrent((Employee element) -> {
+            return element.empAddress;
+            //
+        }, () -> {
+            return new ConcurrentHashMap<>();
+            //
+        }, Collectors.toList()));
+        System.out.println(groupingByConcurrent);
+
+        String joining = employeeList.stream().map(element -> {
+            return element.empName;
+        }).collect(Collectors.joining(""));
+        System.out.println(joining);
+
+        Map<Integer, List<Integer>> mapping = employeeList.stream()
+                .collect(Collectors.groupingBy(element -> element.empId, Collectors.mapping(maping -> maping.empId, Collectors.toList())));
+
+        List<String> mappingTheElement = employeeList.stream()
+                .collect(Collectors.mapping(element -> element.empAddress, Collectors.toList()));
+        System.out.println(mappingTheElement);
+    }
+
+    public static void main(String[] args) {
+        collectrosMethod();
     }
 }

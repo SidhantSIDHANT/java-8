@@ -1,6 +1,10 @@
 package org.java8.stream;
 
+import java.security.KeyStore;
+import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 class PredicateDemo implements Predicate<Integer> {
     @Override
@@ -173,13 +177,77 @@ public class StreamApi {
         StringBuffer stringBuffer = supplierLambdaFunction.get();
     }
 
+    class Employee {
+        String empName;
+        String empAddress;
+        int empId;
+        long empContactNumber;
+
+        public Employee(String empName, String empAddress, int empId, long empContactNumber) {
+            this.empName = empName;
+            this.empAddress = empAddress;
+            this.empId = empId;
+            this.empContactNumber = empContactNumber;
+        }
+
+        public String toString() {
+            return "{" + empName + "," + empAddress + "," + empId + "," + empContactNumber + "}";
+        }
+    }
+
+    public void streamMethods() {
+        Employee emp1 = new Employee("java", "java Programming", 22, 123456789);
+        Employee emp2 = new Employee("javaScript", "javaScript Programming", 01, 010101010101);
+        Employee emp3 = new Employee("Phython", "Phython Programming", 0365, 55555555555555l);
+        Employee emp4 = new Employee("Html", "Html Programming", 22, 125468896545l);
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(emp1);
+        employeeList.add(emp2);
+        employeeList.add(emp3);
+        employeeList.add(emp4);
+
+        List<Integer> arrList = new ArrayList<Integer>();
+        arrList.add(10);
+        arrList.add(20);
+        arrList.add(50);
+        arrList.add(40);
+        arrList.add(20);
+        arrList.add(10);
+
+        double getDoubleValue = arrList.stream().collect(Collectors.averagingInt(element -> {
+            return new Integer(element).intValue();
+        }));
+        System.out.println(getDoubleValue);
+
+        List<Integer> collectingAndThen = arrList.stream().collect(Collectors.collectingAndThen(Collectors.toList(), (element) -> {
+            return Collections.unmodifiableList(element);
+        }));
+        System.out.println(collectingAndThen);
+
+        long counting = arrList.stream().collect(Collectors.counting());
+        System.out.println(counting);
+        Map<Integer, List<Integer>> map = arrList.stream().collect(Collectors.groupingBy((Integer ele) -> {
+            return ele;
+        }));
+
+        Map<String, Set<Employee>> employeeMap = employeeList.stream().collect(Collectors.groupingBy(groupElement -> {
+            return groupElement.empName;
+        }, Collectors.toSet()));
+        System.out.println(employeeMap);
+
+        Map<Integer, List<Employee>> employeeMap2 = employeeList.stream().collect(Collectors.groupingBy(groupElement -> groupElement.empId));
+
+    }
+
     public static void main(String[] arg) {
         StreamApi streamApi = new StreamApi();
-        streamApi.binaryOperator();
-        streamApi.unaryOperator();
-        streamApi.predicate();
-        streamApi.function();
-        streamApi.consumer();
-        streamApi.supplier();
+//        streamApi.binaryOperator();
+//        streamApi.unaryOperator();
+//        streamApi.predicate();
+//        streamApi.function();
+//        streamApi.consumer();
+//        streamApi.supplier();
+        streamApi.streamMethods();
+
     }
 }
