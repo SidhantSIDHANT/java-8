@@ -8,6 +8,19 @@ import java.util.stream.Collectors;
 
 public class App {
 
+    List<Employee> employeeList = new ArrayList<Employee>();
+
+    public App() {
+        Employee emp1 = new App().new Employee("java", "mumbai", 15, 2222222222l);
+        Employee emp2 = new App().new Employee("phython", "pune", 25, 123456789l);
+        Employee emp3 = new App().new Employee("javaScript", "Latur", 35, 3333333333l);
+        Employee emp4 = new App().new Employee("Hari Om", "Banner", 2566541, 78945612300l);
+        employeeList.add(emp1);
+        employeeList.add(emp2);
+        employeeList.add(emp3);
+        employeeList.add(emp4);
+    }
+
     class Employee {
         String empName;
         String empAddress;
@@ -19,6 +32,7 @@ public class App {
             this.empAddress = empAddress;
             this.empId = empId;
             this.empContactNumber = empContactNumber;
+
         }
 
         public String toString() {
@@ -26,16 +40,8 @@ public class App {
         }
     }
 
-    public static void collectrosMethod() {
-        Employee emp1 = new App().new Employee("java", "mumbai", 15, 2222222222l);
-        Employee emp2 = new App().new Employee("phython", "pune", 25, 123456789l);
-        Employee emp3 = new App().new Employee("javaScript", "Latur", 35, 3333333333l);
-        Employee emp4 = new App().new Employee("Hari Om", "Banner", 2566541, 78945612300l);
-        List<Employee> employeeList = new ArrayList<Employee>();
-        employeeList.add(emp1);
-        employeeList.add(emp2);
-        employeeList.add(emp3);
-        employeeList.add(emp4);
+    public void collectrosMethod() {
+
 
         Map<Integer, List<Employee>> map = employeeList.stream().collect(Collectors.groupingBy((item) -> {
             return item.empId;
@@ -85,7 +91,12 @@ public class App {
         System.out.println(optional);
     }
 
+    public void streamMethod() {
+
+    }
+
     public static void main(String[] args) {
-        collectrosMethod();
+        App app = new App();
+        app.collectrosMethod();
     }
 }
