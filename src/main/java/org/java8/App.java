@@ -65,6 +65,24 @@ public class App {
         List<String> mappingTheElement = employeeList.stream()
                 .collect(Collectors.mapping(element -> element.empAddress, Collectors.toList()));
         System.out.println(mappingTheElement);
+
+        List<Integer> mappingWithInteger = employeeList.stream().collect(Collectors.mapping(element -> element.empId, Collectors.toList()));
+        System.out.println(mappingWithInteger);
+//
+        Map<Integer, List<Employee>> mapElement = employeeList.stream().collect(Collectors.toMap(element -> element.empId, element2 -> {
+//            List<Employee> list = new ArrayList<Employee>();
+//            list.add(element2);
+//            return list;
+            return Collections.singletonList(element2);
+        }));
+        System.out.println(mapElement);
+
+        List<Integer> mapElement2 = employeeList.stream().collect(Collectors.mapping(mapped -> mapped.empId, Collectors.toList()));
+
+        Optional<Integer> optional = mapElement2.stream().collect(Collectors.minBy((min1, min2) -> {
+            return min1.compareTo(min2);
+        }));
+        System.out.println(optional);
     }
 
     public static void main(String[] args) {

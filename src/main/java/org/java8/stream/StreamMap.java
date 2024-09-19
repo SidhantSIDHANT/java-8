@@ -3,8 +3,6 @@ package org.java8.stream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-//import java.util.stream.Stream;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
