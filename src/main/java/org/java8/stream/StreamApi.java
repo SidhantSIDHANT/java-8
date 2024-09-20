@@ -365,9 +365,15 @@ public class StreamApi {
         }));
         System.out.println(summingInt);
 
-		Double summrizingToDuble = arrList.stream().collect(Collectors.summingDouble(element ->{
-			return element;
-		}));
+        Double summrizingToDuble = arrList.stream().collect(Collectors.summingDouble(element -> {
+            return element;
+        }));
+        System.out.println(summrizingToDuble);
+
+       List<Employee> toCollection =  employeeList.stream().collect(Collectors.toCollection(() -> {
+            return employeeList;
+        }));
+       System.out.println(toCollection);
     }
 
     public static void main(String[] arg) {
