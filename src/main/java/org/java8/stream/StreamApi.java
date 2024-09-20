@@ -210,13 +210,16 @@ public class StreamApi {
         employeeList.add(emp3);
         employeeList.add(emp4);
 
-        List<Integer> arrList = new ArrayList<Integer>();
+        //Remove the reference
+        List<Integer> arrList = this.arrList.stream().collect(Collectors.toList());
         arrList.add(10);
         arrList.add(20);
         arrList.add(50);
         arrList.add(40);
         arrList.add(20);
         arrList.add(10);
+
+        System.out.println(this.arrList + " line number 221");
 
         double getDoubleValue = arrList.stream().collect(Collectors.averagingInt(element -> {
             return element.intValue();
@@ -323,6 +326,7 @@ public class StreamApi {
         Map<Boolean, Map<Integer, StreamApi.Employee>> partitioningByMap = employeeList.stream().collect(Collectors.partitioningBy(predicate -> predicate.empId <= 100, Collectors.toMap(key -> key.empId, value -> value)));
         System.out.println(partitioningByMap);
 
+        //Remove the reference
         List<Integer> arrList = this.arrList.stream().collect(Collectors.toList());
         arrList.add(20);
         arrList.add(30);
@@ -351,22 +355,30 @@ public class StreamApi {
         System.out.println(returnOptional);
 
         // summarizingLong
-        LongSummaryStatistics summrizingToLong = arrList.stream().collect(Collectors.summarizingLong((Integer integer) -> {
+        LongSummaryStatistics summarizingLong = arrList.stream().collect(Collectors.summarizingLong((Integer integer) -> {
             return integer;
         }));
-        System.out.println(summrizingToLong);
+        System.out.println(summarizingLong);
 
+        Integer summingInt = arrList.stream().collect(Collectors.summingInt(element -> {
+            return 20;
+        }));
+        System.out.println(summingInt);
+
+		Double summrizingToDuble = arrList.stream().collect(Collectors.summingDouble(element ->{
+			return element;
+		}));
     }
 
     public static void main(String[] arg) {
         StreamApi streamApi = new StreamApi();
-        streamApi.binaryOperator();
-        streamApi.unaryOperator();
-        streamApi.predicate();
-        streamApi.function();
-        streamApi.consumer();
-        streamApi.supplier();
-        streamApi.streamMethods();
+//        streamApi.binaryOperator();
+//        streamApi.unaryOperator();
+//        streamApi.predicate();
+//        streamApi.function();
+//        streamApi.consumer();
+//        streamApi.supplier();
+//        streamApi.streamMethods();
         streamApi.collectrosMethod();
     }
 }
