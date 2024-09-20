@@ -323,10 +323,12 @@ public class StreamApi {
         Map<Boolean, Map<Integer, StreamApi.Employee>> partitioningByMap = employeeList.stream().collect(Collectors.partitioningBy(predicate -> predicate.empId <= 100, Collectors.toMap(key -> key.empId, value -> value)));
         System.out.println(partitioningByMap);
 
+        List<Integer> arrList = this.arrList.stream().collect(Collectors.toList());
         arrList.add(20);
         arrList.add(30);
         arrList.add(40);
         arrList.add(55);
+
         Optional<Integer> optional23 = arrList.stream().collect(Collectors.reducing((ele, ele2) -> {
             return ele + ele2;
         }));
