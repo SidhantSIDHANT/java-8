@@ -31,14 +31,10 @@ public class StreamDemo {
         List<Integer> list = optional.stream().flatMap(element -> element.stream()).filter(filterdElement -> {
             return filterdElement >= 20;
         }).collect(Collectors.toList());
-
-        System.out.println(list);
-
-
     }
 
     public static void main(String[] arg) {
-//        functionalInterface();
+       /* functionalInterface();*/
         StreamDemo streamDemo = new StreamDemo();
         streamDemo.functionalInterface();
     }

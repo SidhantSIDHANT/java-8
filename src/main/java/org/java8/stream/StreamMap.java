@@ -8,10 +8,6 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-interface ILabmdaUsed<T> {
-    public void show(T a, T b);
-}
-
 public class StreamMap {
     public void streamMethods() {
         List<Integer> list = new ArrayList<Integer>();

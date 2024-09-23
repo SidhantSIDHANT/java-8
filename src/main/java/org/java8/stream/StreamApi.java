@@ -279,99 +279,102 @@ public class StreamApi {
         employeeList.add(emp3);
         employeeList.add(emp4);
 
-        Map<Integer, List<StreamApi.Employee>> map = employeeList.stream().collect(Collectors.groupingBy((item) -> {
-            return item.empId;
-        }, () -> {
-            return new HashMap<Integer, List<StreamApi.Employee>>();
-        }, Collectors.toList()));
-        System.out.println(map);
+        Map<Integer, List<StreamApi.Employee>> map = employeeList.stream()
+                .collect(Collectors.groupingBy((item) -> {
+                    return item.empId;
+                }, () -> {
+                    return new HashMap<Integer, List<StreamApi.Employee>>();
+                }, Collectors.toList()));
 
-        Map<String, List<StreamApi.Employee>> groupingByConcurrent = employeeList.stream().collect(Collectors.groupingByConcurrent((StreamApi.Employee element) -> {
-            return element.empAddress;
-        }, () -> {
-            return new ConcurrentHashMap<>();
-        }, Collectors.toList()));
-        System.out.println(groupingByConcurrent);
+        Map<String, List<StreamApi.Employee>> groupingByConcurrent = employeeList.stream()
+                .collect(Collectors.groupingByConcurrent((StreamApi.Employee element) -> {
+                    return element.empAddress;
+                }, () -> {
+                    return new ConcurrentHashMap<>();
+                }, Collectors.toList()));
 
         String joining = employeeList.stream().map(element -> {
             return element.empName;
         }).collect(Collectors.joining(""));
-        System.out.println(joining);
 
-        Map<Integer, List<Integer>> mapping = employeeList.stream().collect(Collectors.groupingBy(element -> element.empId, Collectors.mapping(maping -> maping.empId, Collectors.toList())));
+        Map<Integer, List<Integer>> mapping = employeeList.stream()
+                .collect(Collectors.groupingBy(element -> element.empId, Collectors.mapping(maping -> maping.empId, Collectors.toList())));
 
-        List<String> mappingTheElement = employeeList.stream().collect(Collectors.mapping(element -> element.empAddress, Collectors.toList()));
-        System.out.println(mappingTheElement);
+        List<String> mappingTheElement = employeeList.stream()
+                .collect(Collectors.mapping(element -> element.empAddress, Collectors.toList()));
 
-        List<Integer> mappingWithInteger = employeeList.stream().collect(Collectors.mapping(element -> element.empId, Collectors.toList()));
-        System.out.println(mappingWithInteger);
+        List<Integer> mappingWithInteger = employeeList.stream()
+                .collect(Collectors.mapping(element -> element.empId, Collectors.toList()));
         //
-        Map<Integer, List<StreamApi.Employee>> mapElement = employeeList.stream().collect(Collectors.toMap(element -> element.empId, element2 -> {
-            return Collections.singletonList(element2);
-            // List<Employee> list = new ArrayList<Employee>();
-            // list.add(element2);
-            // return list;
-        }));
-        System.out.println(mapElement);
+        Map<Integer, List<StreamApi.Employee>> mapElement = employeeList.stream()
+                .collect(Collectors.toMap(element -> element.empId, element2 -> {
+                    return Collections.singletonList(element2);
+                    // List<Employee> list = new ArrayList<Employee>();
+                    // list.add(element2);
+                    // return list;
+                }));
 
-        List<Integer> mapElement2 = employeeList.stream().collect(Collectors.mapping(mapped -> mapped.empId, Collectors.toList()));
+        List<Integer> mapElement2 = employeeList.stream()
+                .collect(Collectors.mapping(mapped -> mapped.empId, Collectors.toList()));
 
-        Optional<Integer> optional = mapElement2.stream().collect(Collectors.minBy((min1, min2) -> {
-            return min1.compareTo(min2);
-        }));
-        System.out.println(optional);
+        Optional<Integer> optional = mapElement2.stream()
+                .collect(Collectors.minBy((min1, min2) -> {
+                    return min1.compareTo(min2);
+                }));
 
-        Map<Boolean, List<Integer>> partitioningBy = employeeList.stream().collect(Collectors.partitioningBy((element) -> {
-            return element.empId >= 100;
-        }, Collectors.mapping(element -> element.empId, Collectors.toList())));
-        System.out.println(partitioningBy);
+        Map<Boolean, List<Integer>> partitioningBy = employeeList.stream()
+                .collect(Collectors.partitioningBy((element) -> {
+                    return element.empId >= 100;
+                }, Collectors.mapping(element -> element.empId, Collectors.toList())));
 
-        Map<Boolean, Map<Integer, StreamApi.Employee>> partitioningByMap = employeeList.stream().collect(Collectors.partitioningBy(predicate -> predicate.empId <= 100, Collectors.toMap(key -> key.empId, value -> value)));
-        System.out.println(partitioningByMap);
+        Map<Boolean, Map<Integer, StreamApi.Employee>> partitioningByMap = employeeList.stream()
+                .collect(Collectors.partitioningBy(predicate -> predicate.empId <= 100, Collectors.toMap(key -> key.empId, value -> value)));
 
         //Remove the reference
-        List<Integer> arrList = this.arrList.stream().collect(Collectors.toList());
+        List<Integer> arrList = this.arrList.stream()
+                .collect(Collectors.toList());
         arrList.add(20);
         arrList.add(30);
         arrList.add(40);
         arrList.add(55);
 
-        Optional<Integer> optional23 = arrList.stream().collect(Collectors.reducing((ele, ele2) -> {
-            return ele + ele2;
-        }));
-        System.out.println(optional23);
+        Optional<Integer> optional23 = arrList.stream()
+                .collect(Collectors.reducing((ele, ele2) -> {
+                    return ele + ele2;
+                }));
 
-        Optional<StreamApi.Employee> optional12 = employeeList.stream().collect(Collectors.reducing(new BinaryOperator<StreamApi.Employee>() {
-            public StreamApi.Employee apply(StreamApi.Employee a, StreamApi.Employee b) {
-                return a;
-            }
-        }));
-        System.out.println(optional12);
+        Optional<StreamApi.Employee> optional12 = employeeList.stream()
+                .collect(Collectors.reducing(new BinaryOperator<StreamApi.Employee>() {
+                    public StreamApi.Employee apply(StreamApi.Employee a, StreamApi.Employee b) {
+                        return a;
+                    }
+                }));
 
-        Optional<StreamApi.Employee> optional123 = employeeList.stream().collect(Collectors.reducing((StreamApi.Employee emp, StreamApi.Employee emp12) -> {
-            return emp;
-        }));
+        Optional<StreamApi.Employee> optional123 = employeeList.stream()
+                .collect(Collectors.reducing((StreamApi.Employee emp, StreamApi.Employee emp12) -> {
+                    return emp;
+                }));
 
-        Optional<Integer> returnOptional = arrList.stream().collect(Collectors.reducing((reduce1, reduce2) -> {
-            return reduce1 - reduce2;
-        }));
-        System.out.println(returnOptional);
+        Optional<Integer> returnOptional = arrList.stream()
+                .collect(Collectors.reducing((reduce1, reduce2) -> {
+                    return reduce1 - reduce2;
+                }));
 
         // summarizingLong
-        LongSummaryStatistics summarizingLong = arrList.stream().collect(Collectors.summarizingLong((Integer integer) -> {
-            return integer;
-        }));
-        System.out.println(summarizingLong);
+        LongSummaryStatistics summarizingLong = arrList.stream()
+                .collect(Collectors.summarizingLong((Integer integer) -> {
+                    return integer;
+                }));
 
-        Integer summingInt = arrList.stream().collect(Collectors.summingInt(element -> {
-            return 20;
-        }));
-        System.out.println(summingInt);
+        Integer summingInt = arrList.stream()
+                .collect(Collectors.summingInt(element -> {
+                    return 20;
+                }));
 
-        Double summrizingToDuble = arrList.stream().collect(Collectors.summingDouble(element -> {
-            return element;
-        }));
-        System.out.println(summrizingToDuble);
+        Double summrizingToDuble = arrList.stream()
+                .collect(Collectors.summingDouble(element -> {
+                    return element;
+                }));
 
 //        List<Employee> toCollection = employeeList.stream().collect(Collectors.toCollection(() -> {
 //            return employeeList;
