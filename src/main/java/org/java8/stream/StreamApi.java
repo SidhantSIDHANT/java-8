@@ -1,5 +1,6 @@
 package org.java8.stream;
 
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.*;
@@ -66,10 +67,12 @@ class BinaryOperatorDemo implements BinaryOperator<String> {
 }
 
 public class StreamApi {
+    String employeeName;
+    String employeeAddress;
+    int empId;
 
     List<StreamApi.Employee> employeeList = new ArrayList<StreamApi.Employee>();
     List<Integer> arrList = new ArrayList();
-
 
     public void binaryOperator() {
         BinaryOperator<String> binaryOperatorAnonymousFunction = new BinaryOperator<String>() {
@@ -370,21 +373,61 @@ public class StreamApi {
         }));
         System.out.println(summrizingToDuble);
 
-       List<Employee> toCollection =  employeeList.stream().collect(Collectors.toCollection(() -> {
-            return employeeList;
-        }));
-       System.out.println(toCollection);
+//        List<Employee> toCollection = employeeList.stream().collect(Collectors.toCollection(() -> {
+//            return employeeList;
+//        }));
+//        System.out.println(toCollection);
+    }
+
+    public void createDataBaseConnection() {
+        System.out.println("Please Enter the Employee Name");
+        Scanner scanner = new Scanner(System.in);
+        this.employeeAddress = scanner.next();
+        System.out.println("Please Enter the Employee Id");
+        this.empId = scanner.nextInt();
+        System.out.println("Please Enter the Employee Name");
+        this.employeeName = scanner.next();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/employeeInformation", "root", "root@123"); Statement statement = conn.createStatement();) {
+                String createSqlDataBase = "CREATE TABLE employeeDetails(employeeName VARCHAR(255), " + "empId INT," + "empAddress VARCHAR(255))";
+                try {
+                    statement.executeUpdate(createSqlDataBase);
+                } catch (SQLSyntaxErrorException se) {
+                    try {
+                        throw new SQLSyntaxErrorException("Database is created");
+                    } catch (SQLSyntaxErrorException sql) {
+                        sql.printStackTrace();
+                    }
+                }
+
+                String insertData = "INSERT INTO employeeDetails (employeeName, empId, empAddress) VALUES (" + " '" + this.employeeName + "', '" + this.empId + "', '" + this.employeeAddress + "')";
+                statement.executeUpdate(insertData);
+                String selectQuery = "select * from employeeDetails";
+                ResultSet resultSet = statement.executeQuery(selectQuery);
+                while (resultSet.next()) {
+                    System.out.println(resultSet.getString("employeeName"));
+                }
+            } catch (SQLException ie) {
+                ie.printStackTrace();
+            }
+//            boolean executeQuery = statement.execute("select * from rohit_sharma_centuries");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ie) {
+            ie.printStackTrace();
+        }
     }
 
     public static void main(String[] arg) {
         StreamApi streamApi = new StreamApi();
-//        streamApi.binaryOperator();
-//        streamApi.unaryOperator();
-//        streamApi.predicate();
-//        streamApi.function();
-//        streamApi.consumer();
-//        streamApi.supplier();
-//        streamApi.streamMethods();
+        //        streamApi.binaryOperator();
+        //        streamApi.unaryOperator();
+        //        streamApi.predicate();
+        //        streamApi.function();
+        //        streamApi.consumer();
+        //        streamApi.supplier();
+        //        streamApi.streamMethods();
         streamApi.collectrosMethod();
+        streamApi.createDataBaseConnection();
     }
 }
